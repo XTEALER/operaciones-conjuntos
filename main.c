@@ -38,12 +38,15 @@ void clearScreen(void)
 
 void range_read(int *toread, int minvalue, int maxvalue)
 {
-    while(1) {
+    while(1) 
+    {
         read_integer(toread);
         if (*toread < minvalue || *toread > maxvalue)
         {
             printf("---> ERROR!!! Use valores entre MIN(%d) y MAX(%d): ", minvalue, maxvalue);
-        } else {
+        } 
+        else
+        {
             break;
         }
     }
@@ -52,28 +55,41 @@ void range_read(int *toread, int minvalue, int maxvalue)
 // (const char* to print || NULL, char* toRead)
 int choiceReader(const char *inMsg, const char* choices, char* toRead)
 {
-    int choicesLen, loop = 1, x;
-    if(inMsg != NULL) {
+    int choicesLen = 0, loop = 1, x = 0, ToReturn = 0;
+    if(inMsg != NULL) 
+    {
         printf("%s", inMsg);
     }
 
     choicesLen = strlen(choices);
-    do {
+    do 
+    {
         read_char(toRead, 2);
-        for(x = 0; x < choicesLen; x++) {
-            if(*toRead == choices[x]) {
+        for(x = 0; x < choicesLen; x++) 
+        {
+            if(*toRead == choices[x]) 
+            {
                 loop = 0;
                 x = choicesLen;
-                if(*toRead == 'N') {
-                    return 0;
-                } else {
-                    return 1;
+                if(*toRead == 'N') 
+                {
+                    ToReturn = 0;
+                    break;
+                } 
+                else 
+                {
+                    ToReturn = 1;
+                    break;
                 }
-            } else if((x + 1) == choicesLen) {
+            } 
+            else if((x + 1) == choicesLen) 
+            {
                 printf("ERROR... ingrese [%s] solamente: ", choices);
             }
         }
-    } while(loop);
+    }
+    while(loop);
+    return ToReturn;
 }
 
 int number_generator(int gen_range)
@@ -84,19 +100,27 @@ int number_generator(int gen_range)
 // message to the user when selecting ranges
 void sel_message(const char *argmsg, int vmin, int vmax, int strchoice)
 {
-    if(strchoice == 1) {
+    if(strchoice == 1) 
+    {
         printf("\nCantidad de %s a generar?\n[MIN %d y MAX %d]: ", argmsg, vmin, vmax);
-    } else if(strchoice == 2) {
+    } 
+    else if(strchoice == 2) 
+    {
         printf("\nCantidad de %s a leer? [MIN %d y MAX %d]: ", argmsg, vmin, vmax);
     }
 }
 
-int compLetters(char A, char* B, int lim){
+int compLetters(char A, char* B, int lim)
+{
     int x;
-    for(x = 0; x < lim; x++) {
-        if(A != B[x]) {
+    for(x = 0; x < lim; x++) 
+    {
+        if(A != B[x]) 
+        {
             continue;
-        } else {
+        } 
+        else 
+        {
             return 0;
         }
     }
@@ -109,60 +133,85 @@ int Arraylen,
 int subSize,
 char* results,
 char* Operator,
-int* lim) {
-    int x, y, z, alpha;
+int* lim) 
+{
+    int x = 0, y = 0, z = 0, alpha = 0;
+
     printf("\nOperator[0] = (%c)\nsubArray(RES)[A] = ", Operator[0]);
-    z = 0;
-    for(x = 0; x < subSize; x++) {
+    for(x = 0; x < subSize; x++) 
+    {
         alpha = 0;
-        for(y = 0; y < subSize; y++) {
+        for(y = 0; y < subSize; y++) 
+        {
             printf("\nArrayA[%d] = (%c) | ArrayB[%d] = (%c)", x, Arrays[0][x], y, Arrays[1][y]);
-            if(Operator[0] == '^') {
-                if(Arrays[0][x] == Arrays[1][y]) {
-                    if(compLetters(Arrays[0][x], results, (z + 1))) {
+            if(Operator[0] == '^') 
+            {
+                if(Arrays[0][x] == Arrays[1][y]) 
+                {
+                    if(compLetters(Arrays[0][x], results, (z + 1))) 
+                    {
                         printf(" Coincide (%c) ->", Arrays[0][x]);
                         results[z] = Arrays[0][x];
-                        *lim++;
+                        lim++;
                         z++;
                         printf(" Guardado");
                         break;
-                    } else {
+                    } 
+                    else 
+                    {
                         printf(" Repetido <- %c", Arrays[0][x]);
                         break;
                     }
-                } else {
+                } 
+                else 
+                {
                     printf(" No Coincide");
                 }
-            } else if(Operator[0] == '\\') {
-                if(compLetters(Arrays[0][x], Arrays[1], subSize)) {
+            } 
+            else if(Operator[0] == '\\') 
+            {
+                if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                {
                     printf(" Coincide (%c) ->", Arrays[0][x]);
-                    if(compLetters(Arrays[0][x], results, (z + 1))) {
+                    if(compLetters(Arrays[0][x], results, (z + 1))) 
+                    {
                         results[z] = Arrays[0][x];
-                        *lim++;
+                        lim++;
                         z++;
                         printf(" Guardado");
                         break;
-                    } else {
+                    } 
+                    else 
+                    {
                         printf(" Repetido <- %c", Arrays[0][x]);
                         break;
                     }
-                } else {
+                } 
+                else 
+                {
                     printf(" No Coincide");
                 }
-            } else if(Operator[0] == '$') {
-                if(compLetters(Arrays[0][x], Arrays[1], subSize)) {
+            } 
+            else if(Operator[0] == '$') 
+            {
+                if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                {
                     printf("\nArray A Saved");
-                    if(compLetters(Arrays[0][x], results, (z + 1))) {
+                    if(compLetters(Arrays[0][x], results, (z + 1))) 
+                    {
                         results[z] = Arrays[0][x];
-                        *lim++;
+                        lim++;
                         z++;
                         break;
                     }
-                } else if(compLetters(Arrays[1][x], Arrays[0], subSize)) {
+                } 
+                else if(compLetters(Arrays[1][x], Arrays[0], subSize)) 
+                {
                     printf("\nArray B Saved");
-                    if(compLetters(Arrays[1][x], results, (z + 1))) {
+                    if(compLetters(Arrays[1][x], results, (z + 1))) 
+                    {
                         results[z] = Arrays[1][x];
-                        *lim++;
+                        lim++;
                         z++;
                         break;
                     }
@@ -170,64 +219,94 @@ int* lim) {
             }
         }
     }
-    if(Arraylen > 2) {
-        for(x = 0; x < subSize; x++) {
+
+    // operacion con el tercer elemento no es posible
+    if(Arraylen > 2)
+    {
+        z = 0;
+        for(x = 0; x < strlen(results); x++) 
+        {
             alpha = 0;
-            for(y = 0; y < subSize; y++) {
-                printf("\nArrayA[%d] = (%c) | ArrayB[%d] = (%c)", x, results[x], y, Arrays[1][y]);
-                if(Operator[1] == '^') {
-                    if(results[x] == Arrays[2][y]) {
-                        if(compLetters(Arrays[2][x], results, z+1)) {
-                            printf(" Coincide (%c) ->", results[x]);
+            for(y = 0; y < subSize; y++)
+            {
+                printf("\nArrayA[%d] = (%c) | ArrayB[%d] = (%c)", x, Arrays[0][x], y, Arrays[1][y]);
+                if(Operator[1] == '^') 
+                {
+                    if(results[x] == Arrays[2][y])
+                    {
+                        if(compLetters(Arrays[2][x], results, (z + 1))) 
+                        {
+                            printf(" Coincide (%c) ->", Arrays[2][y]);
                             results[z] = Arrays[2][x];
-                            //z++;
-                            *lim++;
+                            lim++;
+                            z++;
                             printf(" Guardado");
                             break;
-                        } else {
-                            printf(" Repetido <- %c", Arrays[2][x]);
+                        } 
+                        else
+                        {
+                            printf(" Repetido <- %c", Arrays[2][y]);
                             break;
                         }
-                    } else {
+                    } 
+                    else 
+                    {
                         printf(" No Coincide");
                     }
-                } else if(Operator[1] == '\\') {
-                    if(compLetters(results[x], Arrays[2], subSize)) {
-                        printf(" Coincide (%c) ->", Arrays[2][x]);
-                        if(compLetters(Arrays[2][x], results, z+1)) {
-                            results[z] = Arrays[2][x];
-                            //z++;
-                            *lim++;
+                } 
+                else if(Operator[1] == '\\') 
+                {
+                    if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                    {
+                        printf(" Coincide (%c) ->", Arrays[0][x]);
+                        if(compLetters(Arrays[0][x], results, (z + 1))) 
+                        {
+                            results[z] = Arrays[0][x];
+                            lim++;
+                            z++;
                             printf(" Guardado");
                             break;
-                        } else {
-                            printf(" Repetido <- %c", Arrays[2][x]);
+                        } 
+                        else 
+                        {
+                            printf(" Repetido <- %c", Arrays[0][x]);
                             break;
                         }
-                    } else {
+                    } 
+                    else 
+                    {
                         printf(" No Coincide");
                     }
-                } else if(Operator[1] == '$') {
-                    if(compLetters(results[x], Arrays[2], subSize)) {
-                        printf("\nArray C Saved");
-                        if(compLetters(Arrays[2][x], results, (z + 1))) {
-                            results[z] = Arrays[2][x];
-                            //z++;
-                            *lim++;
+                } 
+                else if(Operator[1] == '$') 
+                {
+                    if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                    {
+                        printf("\nArray A Saved");
+                        if(compLetters(Arrays[0][x], results, (z + 1))) 
+                        {
+                            results[z] = Arrays[0][x];
+                            lim++;
+                            z++;
                             break;
                         }
-                    } else if(compLetters(results[x], Arrays[2], subSize)) {
-                        // printf("\nArray B Saved");
-                        // if(compLetters(results[x], results, (z + 1))) {
-                        //     results[z] = Arrays[1][x];
-                        //     //z++;
-                        //     break;
-                        // }
+                    } 
+                    else if(compLetters(Arrays[1][x], Arrays[0], subSize)) 
+                    {
+                        printf("\nArray B Saved");
+                        if(compLetters(Arrays[1][x], results, (z + 1))) 
+                        {
+                            results[z] = Arrays[1][x];
+                            lim++;
+                            z++;
+                            break;
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 // (char* array, int limit)
@@ -250,17 +329,19 @@ void generateLine(char chac, int doTimes)
 }
 
 /*main program*/
-int main(void) {
+int main(void) 
+{
     int doagain = 1, makeNewSettings = 1, x, y, z, LimitCounter;
     char vowels[] = {'a', 'e', 'i', 'o', 'u'},
-     consonants[] = {'b', 'k', 'm', 'p', 's', 't'},
-     checker;
+    consonants[] = {'b', 'k', 'm', 'p', 's', 't'},
+    checker;
     
     generateLine('*', 64);
     printf("\n|  BIENVENIDO A LA EMPRESA DE TELEFONIA MOVIL **MAS-RAPIDIN**  |\n");
     generateLine('*', 64);
 
-    do {
+    do 
+    {
         srand(time(NULL)); // rand seed initializer
         if (makeNewSettings) 
         {
@@ -297,18 +378,24 @@ int main(void) {
         // load array with random numbers within op.codifLen lenght
         y = 0;
         z = 0;
-        while (y < op.codifLen) {
+        while (y < op.codifLen) 
+        {
             z = number_generator(op.codifLen);
-            for (x = 0; x < op.codifLen; x++) {
-                if (sortRandom[x] != z) {
+            for (x = 0; x < op.codifLen; x++) 
+            {
+                if (sortRandom[x] != z) 
+                {
                     //printf("\nLOL");
-                    if (y == x) {
+                    if (y == x) 
+                    {
                         sortRandom[y] = z;
                         //printf("\n sorter[%d] = %d", y, z);
                         y++;
                         break;
                     }
-                } else {
+                } 
+                else 
+                {
                     break;
                 }
             }
@@ -316,11 +403,16 @@ int main(void) {
         // load of S[]
         for (x = 0; x < op.codifLen; x++)
         {
-            if(op.numlen - x > 0) {
+            if(op.numlen - x > 0) 
+            {
                 S[sortRandom[x]] = '0' + number_generator(10);
-            } else if ((op.numlen + op.vowlen) - x > 0) {
+            } 
+            else if ((op.numlen + op.vowlen) - x > 0) 
+            {
                 S[sortRandom[x]] = vowels[number_generator(5)];
-            } else if ((op.codifLen) - x > 0) {
+            } 
+            else if ((op.codifLen) - x > 0) 
+            {
                 S[sortRandom[x]] = consonants[number_generator(6)];
             }
         }
@@ -348,24 +440,30 @@ int main(void) {
             printf(" }");
         }
 
-        if(makeNewSettings) {
+        if(makeNewSettings)
+        {
             // operations selection
             printf("\n\nBLOQUES DE OPERACIONES A PROCESAR?\nNINGUNO(0) y MAX(9): ");
             range_read(&op.blocks, 0, 9);
         }
 
         op.blockSize = (op.perBlock * 2) + 1;
-        struct blocks {
-            char operations[op.blockSize], results[6];
+        struct blocks 
+        {
+            char operations[5], results[6];
             int reSize;
-        } block[op.blocks];
+        }
+        block[9];
         int repetitions, alpha, beta, gamma;
         char* blocksToProcess[3];
 
-        if(op.blocks > 0) {
+        if(op.blocks > 0) 
+        {
             // operations
-            for(x = 0; x < op.blocks; x++) {
-                if(makeNewSettings) {
+            for(x = 0; x < op.blocks; x++) 
+            {
+                if(makeNewSettings) 
+                {
                     printf("\n\n|  BLOQUE DE OPERACIONES #%d  |\n|  CANTIDAD DE OPERACIONES [MIN(1) y MAX(2)]?  |", x + 1);
                     range_read(&op.perBlock, 1, 2);
                     op.blockSize = (op.perBlock * 2) + 1;
@@ -374,40 +472,56 @@ int main(void) {
                     generateLine('-', 78);
                     printf("\n");
                     y = 0;
-                    while(1) {  // reader
-                        if(y < op.blockSize) {
+                    while(1) 
+                    {  // reader
+                        if(y < op.blockSize) 
+                        {
                             printf(">> ELEMENTOS CARGADOS(%d) = ", y);
-                            for(z = 0; z < op.blockSize; z++) {
-                                if(op.blockSize > 3 && z == 0) {
+                            for(z = 0; z < op.blockSize; z++) 
+                            {
+                                if(op.blockSize > 3 && z == 0) 
+                                {
                                     printf("(");
                                 }
-                                if(z < y) {
+                                if(z < y) 
+                                {
                                     printf("[%c]", block[x].operations[z]);
-                                } else {
+                                } 
+                                else 
+                                {
                                     printf("[-]");
                                 }
-                                if(op.blockSize > 3 && (z + 1) % 3 == 0) {
+                                if(op.blockSize > 3 && (z + 1) % 3 == 0) 
+                                {
                                     printf(")");
                                 }
                             }
                             printf(": ");
                         
-                            if(y%2 == 0) {
+                            if(y%2 == 0) 
+                            {
                                 choiceReader(NULL, "ABC", &block[x].operations[y]);
-                            } else if(y%2 > 0) {
+                            } 
+                            else if(y%2 > 0) 
+                            {
                                 choiceReader(NULL, "^\\$", &block[x].operations[y]);
                             }
                             // y adds up one unit
                             y++;
                             // checks operation submited with already saved ones for coincidences
-                            if(y == op.blockSize) {
-                                for(alpha = 0; alpha < x; alpha++) {
+                            if(y == op.blockSize) 
+                            {
+                                for(alpha = 0; alpha < x; alpha++) 
+                                {
                                     repetitions = 0;
-                                    for(beta = 0; beta < op.blockSize; beta++) {
-                                        if(block[x].operations[beta] == block[alpha].operations[beta]) {
+                                    for(beta = 0; beta < op.blockSize; beta++) 
+                                    {
+                                        if(block[x].operations[beta] == block[alpha].operations[beta]) 
+                                        {
                                             repetitions++;
                                         }
-                                        if(repetitions == op.blockSize) {
+                                        if(repetitions == op.blockSize) 
+                                        {
                                             printf("\n****BLOQUE DE OPERACIONES REPETIDO****\n");
                                             y = 0;
                                             break;
@@ -415,7 +529,9 @@ int main(void) {
                                     }
                                 }
                             }
-                        } else {
+                        } 
+                        else 
+                        {
                             printf("---CARGA DE ELEMENTOS(%d) DEL BLOQUE #%d COMPLETA---", y, x + 1);
                             break;
                         }
@@ -431,54 +547,69 @@ int main(void) {
                         {
                             blocksToProcess[beta] = subArrayUnchanged[0];
                             beta++;
-                        } else if(block[x].operations[alpha] == 'B') 
+                        } 
+                        else if(block[x].operations[alpha] == 'B') 
                         {
                             blocksToProcess[beta] = subArrayUnchanged[1];
                             beta++;
-                        } else if(block[x].operations[alpha] == 'C') 
+                        } 
+                        else if(block[x].operations[alpha] == 'C') 
                         {
                             blocksToProcess[beta] = subArrayUnchanged[2];
                             beta++;
-                        } else if(block[x].operations[alpha] == '^') {
+                        } 
+                        else if(block[x].operations[alpha] == '^') 
+                        {
                             OpBlock[gamma] = '^';
                             gamma++;
-                        } else if(block[x].operations[alpha] == '\\') {
+                        } 
+                        else if(block[x].operations[alpha] == '\\') 
+                        {
                             OpBlock[gamma] = '\\';
                             gamma++;
-                        } else if(block[x].operations[alpha] == '$') {
+                        } 
+                        else if(block[x].operations[alpha] == '$') 
+                        {
                             OpBlock[gamma] = '$';
                             gamma++;
                         }
                     }
 
-                    // pass subarrays of S to operator function
-                    if(op.perBlock == 1)
-                    {
-                        operationsMaker(blocksToProcess,
-                        beta,
-                        op.codifLen,
-                        block[x].results,
-                        OpBlock, block[x].reSize);
-                    }
+                    operationsMaker(blocksToProcess,
+                    beta,
+                    op.codifLen,
+                    block[x].results,
+                    OpBlock, &block[x].reSize);
                 }
             }
         
         //results printing
-        for(x = 0; x < op.blocks; x++) {
+        for(x = 0; x < op.blocks; x++) 
+        {
             printf("\nRESULTADO BLOQUE %d = {", x + 1);
             printArray(block[x].results, strlen(block[x].results));
             printf("}");
+        }
+
+        for(x = 0; x < op.blocks; x++)
+        {
+            for(y = 0; y < 6; y++)
+            {
+                block[x].results[y] = '\0';
+            }
         }
 
         // end main program loop
         doagain = choiceReader("\n\nREINICIAR PROGRAMA (y/n)? ", "YN", &checker);
 
         // settings management
-        if (doagain) {
+        if (doagain) 
+        {
            makeNewSettings = choiceReader("CREAR AJUSTES NUEVOS (y/n)? ", "YN", &checker);
         }
 
-    } while (doagain);
+    } 
+    while (doagain);
     printf("\n\nPROGRAMA FINALIZADO\n");
     return 0;
 }
