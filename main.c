@@ -110,21 +110,20 @@ void sel_message(const char *argmsg, int vmin, int vmax, int strchoice)
     }
 }
 
+// char tocompare, char* array to evaluate, int array limit
 int compLetters(char A, char* B, int lim)
 {
     int x;
     for(x = 0; x < lim; x++) 
     {
-        if(A != B[x]) 
+        if(A == B[x])
         {
-            continue;
-        } 
-        else 
-        {
-            return 0;
+            // if equals then returns 1
+            return 1;
         }
     }
-    return 1;
+    //if doesn't equal, returns 0
+    return 0;
 }
 
 // (char ** Arrays, arrayslen)
@@ -132,181 +131,131 @@ void operationsMaker(char** Arrays,
 int Arraylen,
 int subSize,
 char* results,
-char* Operator,
-int* lim) 
+char* Operator)
 {
-    int x = 0, y = 0, z = 0, alpha = 0;
+    int x = 0, y = 0, z, alpha = 0, beta;
+    char OtherResults[subSize];
 
-    printf("\nOperator[0] = (%c)\nsubArray(RES)[A] = ", Operator[0]);
+    // first operation
+    z = 0;
     for(x = 0; x < subSize; x++) 
     {
-        alpha = 0;
-        for(y = 0; y < subSize; y++) 
+        // interseccion
+        if(Operator[0] == '^') 
         {
-            printf("\nArrayA[%d] = (%c) | ArrayB[%d] = (%c)", x, Arrays[0][x], y, Arrays[1][y]);
-            if(Operator[0] == '^') 
+            if(compLetters(Arrays[0][x], Arrays[1], subSize))
             {
-                if(Arrays[0][x] == Arrays[1][y]) 
+                if(!compLetters(Arrays[0][x], results, (z + 1))) 
                 {
-                    if(compLetters(Arrays[0][x], results, (z + 1))) 
-                    {
-                        printf(" Coincide (%c) ->", Arrays[0][x]);
-                        results[z] = Arrays[0][x];
-                        lim++;
-                        z++;
-                        printf(" Guardado");
-                        break;
-                    } 
-                    else 
-                    {
-                        printf(" Repetido <- %c", Arrays[0][x]);
-                        break;
-                    }
+                    results[z] = Arrays[0][x];
+                    z++;
                 } 
-                else 
+            }
+        }
+        else if(Operator[0] == '\\') 
+        {
+            // relative
+            if(!compLetters(Arrays[0][x], Arrays[1], subSize)) 
+            {
+                if(!compLetters(Arrays[0][x], results, (z + 1))) 
                 {
-                    printf(" No Coincide");
+                    results[z] = Arrays[0][x];
+                    z++;
                 }
-            } 
-            else if(Operator[0] == '\\') 
+            }
+        } 
+        else if(Operator[0] == '$') 
+        {
+            // assymetry
+            if(!compLetters(Arrays[0][x], Arrays[1], subSize))
             {
-                if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                if(!compLetters(Arrays[0][x], results, (z + 1))) 
                 {
-                    printf(" Coincide (%c) ->", Arrays[0][x]);
-                    if(compLetters(Arrays[0][x], results, (z + 1))) 
-                    {
-                        results[z] = Arrays[0][x];
-                        lim++;
-                        z++;
-                        printf(" Guardado");
-                        break;
-                    } 
-                    else 
-                    {
-                        printf(" Repetido <- %c", Arrays[0][x]);
-                        break;
-                    }
-                } 
-                else 
-                {
-                    printf(" No Coincide");
+                    results[z] = Arrays[0][x];
+                    z++;
                 }
-            } 
-            else if(Operator[0] == '$') 
+            }
+
+            if(!compLetters(Arrays[1][x], Arrays[0], subSize))
             {
-                if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                if(!compLetters(Arrays[1][x], results, (z + 1)))
                 {
-                    printf("\nArray A Saved");
-                    if(compLetters(Arrays[0][x], results, (z + 1))) 
-                    {
-                        results[z] = Arrays[0][x];
-                        lim++;
-                        z++;
-                        break;
-                    }
-                } 
-                else if(compLetters(Arrays[1][x], Arrays[0], subSize)) 
-                {
-                    printf("\nArray B Saved");
-                    if(compLetters(Arrays[1][x], results, (z + 1))) 
-                    {
-                        results[z] = Arrays[1][x];
-                        lim++;
-                        z++;
-                        break;
-                    }
+                    results[z] = Arrays[1][x];
+                    z++;
                 }
             }
         }
     }
 
-    // operacion con el tercer elemento no es posible
+    // operacion con el tercer elemento
     if(Arraylen > 2)
     {
         z = 0;
-        for(x = 0; x < strlen(results); x++) 
+        beta = strlen(results);
+        // empties results array temporary and loads other results
+        for(alpha = 0; alpha < beta; alpha++)
         {
-            alpha = 0;
-            for(y = 0; y < subSize; y++)
+            OtherResults[alpha] = results[alpha];
+            results[alpha] = '\0';
+        }
+
+        // first operation
+        for(x = 0; x < subSize; x++)
+        {
+            // interseccion
+            if(Operator[1] == '^')
             {
-                printf("\nArrayA[%d] = (%c) | ArrayB[%d] = (%c)", x, Arrays[0][x], y, Arrays[1][y]);
-                if(Operator[1] == '^') 
+                if(compLetters(Arrays[2][x], OtherResults, beta))
                 {
-                    if(results[x] == Arrays[2][y])
+                    if(!compLetters(Arrays[2][x], results, (z + 1)))
                     {
-                        if(compLetters(Arrays[2][x], results, (z + 1))) 
-                        {
-                            printf(" Coincide (%c) ->", Arrays[2][y]);
-                            results[z] = Arrays[2][x];
-                            lim++;
-                            z++;
-                            printf(" Guardado");
-                            break;
-                        } 
-                        else
-                        {
-                            printf(" Repetido <- %c", Arrays[2][y]);
-                            break;
-                        }
-                    } 
-                    else 
-                    {
-                        printf(" No Coincide");
+                        results[z] = Arrays[2][x];
+                        z++;
                     }
-                } 
-                else if(Operator[1] == '\\') 
+                }
+            }
+            else if(Operator[1] == '\\') 
+            {
+                if(x <= beta)
                 {
-                    if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                    // relative
+                    if(!compLetters(OtherResults[x], Arrays[2], subSize))
                     {
-                        printf(" Coincide (%c) ->", Arrays[0][x]);
-                        if(compLetters(Arrays[0][x], results, (z + 1))) 
+                        if(!compLetters(OtherResults[x], results, (z + 1))) 
                         {
-                            results[z] = Arrays[0][x];
-                            lim++;
+                            results[z] = OtherResults[x];
                             z++;
-                            printf(" Guardado");
-                            break;
-                        } 
-                        else 
-                        {
-                            printf(" Repetido <- %c", Arrays[0][x]);
-                            break;
                         }
-                    } 
-                    else 
-                    {
-                        printf(" No Coincide");
                     }
-                } 
-                else if(Operator[1] == '$') 
+                }
+                else
                 {
-                    if(compLetters(Arrays[0][x], Arrays[1], subSize)) 
+                    break;
+                }
+            }
+            else if(Operator[1] == '$') 
+            {
+                // assymetry with c
+                if(!compLetters(Arrays[2][x], OtherResults, beta)) 
+                {
+                    if(!compLetters(Arrays[2][x], results, (z + 1))) 
                     {
-                        printf("\nArray A Saved");
-                        if(compLetters(Arrays[0][x], results, (z + 1))) 
-                        {
-                            results[z] = Arrays[0][x];
-                            lim++;
-                            z++;
-                            break;
-                        }
-                    } 
-                    else if(compLetters(Arrays[1][x], Arrays[0], subSize)) 
+                        results[z] = Arrays[2][x];
+                        z++;
+                    }
+                }
+                // assymetry with results
+                if((x <= beta) && !compLetters(OtherResults[x], Arrays[2], subSize)) 
+                {
+                    if(!compLetters(OtherResults[x], results, (z + 1))) 
                     {
-                        printf("\nArray B Saved");
-                        if(compLetters(Arrays[1][x], results, (z + 1))) 
-                        {
-                            results[z] = Arrays[1][x];
-                            lim++;
-                            z++;
-                            break;
-                        }
+                        results[z] = OtherResults[x];
+                        z++;
                     }
                 }
             }
         }
     }
-
 }
 
 // (char* array, int limit)
@@ -370,6 +319,7 @@ int main(void)
                 range_read(&op.consonantslen, 1, LimitCounter);
                 LimitCounter -= op.vowlen;
             }
+            generateLine('.', 64);
         }
         char subArrayUnchanged[3][op.codifLen];
         char S[op.codifLen];
@@ -385,11 +335,9 @@ int main(void)
             {
                 if (sortRandom[x] != z) 
                 {
-                    //printf("\nLOL");
                     if (y == x) 
                     {
                         sortRandom[y] = z;
-                        //printf("\n sorter[%d] = %d", y, z);
                         y++;
                         break;
                     }
@@ -451,7 +399,6 @@ int main(void)
         struct blocks 
         {
             char operations[5], results[6];
-            int reSize;
         }
         block[9];
         int repetitions, alpha, beta, gamma;
@@ -464,12 +411,13 @@ int main(void)
             {
                 if(makeNewSettings) 
                 {
-                    printf("\n\n|  BLOQUE DE OPERACIONES #%d  |\n|  CANTIDAD DE OPERACIONES [MIN(1) y MAX(2)]?  |", x + 1);
+                    generateLine('.', 83);
+                    printf("\n\nBLOQUE #%d\n[CANTIDAD DE OPERACIONES >> MIN(1) y MAX(2)]: ", x + 1);
                     range_read(&op.perBlock, 1, 2);
                     op.blockSize = (op.perBlock * 2) + 1;
                     printf("\n| OPERADORES >> (^ => INTERSECCION), (\\ => RELATIVO), ($ => DIFERENCIA SIMETRICA) |\n");
-                    printf("\n| SUBCONJUNTOS DISPONIBLES >> (A), (B), (C) |");
-                    generateLine('-', 78);
+                    printf("\n| SUBCONJUNTOS DISPONIBLES >> |A|B|C|\n");
+                    generateLine('-', 83);
                     printf("\n");
                     y = 0;
                     while(1) 
@@ -532,7 +480,7 @@ int main(void)
                         } 
                         else 
                         {
-                            printf("---CARGA DE ELEMENTOS(%d) DEL BLOQUE #%d COMPLETA---", y, x + 1);
+                            printf("---CARGA DE ELEMENTOS(%d) DEL BLOQUE #%d COMPLETA---\n", y, x + 1);
                             break;
                         }
                        
@@ -579,14 +527,18 @@ int main(void)
                     beta,
                     op.codifLen,
                     block[x].results,
-                    OpBlock, &block[x].reSize);
+                    OpBlock);
                 }
             }
         
         //results printing
+        printf("\n");
+        generateLine('-', 24 + op.codifLen);
+        printf("\n[     RESULTADOS     ]\n");
+        generateLine('=', 22);
         for(x = 0; x < op.blocks; x++) 
         {
-            printf("\nRESULTADO BLOQUE %d = {", x + 1);
+            printf("\n|BLOQUE %d| >> {", (x + 1));
             printArray(block[x].results, strlen(block[x].results));
             printf("}");
         }
@@ -603,7 +555,7 @@ int main(void)
         doagain = choiceReader("\n\nREINICIAR PROGRAMA (y/n)? ", "YN", &checker);
 
         // settings management
-        if (doagain) 
+        if(doagain) 
         {
            makeNewSettings = choiceReader("CREAR AJUSTES NUEVOS (y/n)? ", "YN", &checker);
         }
